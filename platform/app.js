@@ -8,8 +8,8 @@ const app = express()
 app.get('/startGame', 
     (req, res) => {
       game = createGame()
-      addCard(game.Player, game.Deck.top(1))
-      addCard(game.Dealer, game.Deck.top(1))
+      addCard(game.Player, game.Deck.draw(1))
+      addCard(game.Dealer, game.Deck.draw(1))
       const returnValue = {
         dealer: game.Dealer,
         player: game.Player

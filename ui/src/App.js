@@ -40,7 +40,7 @@ class App extends Component {
           <div>Dealer</div>
           <div>{this.renderHand(this.state.hands.dealer)}</div>
         </div>
-
+        <br />
         <div>
           <div>Player</div>
           <div>{this.renderHand(this.state.hands.player)}</div>
@@ -51,7 +51,15 @@ class App extends Component {
 
   renderHand(hand) {
     return (
-      <span>{hand.points}</span>
+      <div>
+        <div>
+          <span>Points: </span>
+          <span>{hand.points}</span>
+        </div>
+        {hand.cards.map((card) => (
+          <span className="card">{card.cardName}</span>
+        ))}
+      </div>
     );
   }
 

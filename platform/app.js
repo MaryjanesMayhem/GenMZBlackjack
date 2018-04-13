@@ -1,26 +1,28 @@
-const express = require('express')
-const Deck = require('card-deck')
+const express = require("express");
+const Deck = require("card-deck");
+//app data
+let game = {};
 
-let game = {}
+const app = express();
 
-const app = express()
+app.get("/startGame", (req, res) => {
+  game = createGame();
+  addCard(game.Player, game.Deck.draw(1));
+  addCard(game.Dealer, game.Deck.draw(1));
+  const returnValue = {
+    dealer: game.Dealer,
+    player: game.Player
+  };
 
-app.get('/startGame',
-  (req, res) => {
-    game = createGame()
-    addCard(game.Player, game.Deck.draw(1))
-    addCard(game.Dealer, game.Deck.draw(1))
-    const returnValue = {
-      dealer: game.Dealer,
-      player: game.Player
-    }
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-    res.json(returnValue)
-  }
-)
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.json(returnValue);
+});
 
-app.listen(8080, () => console.log('Example app listening on port 8080!'))
+app.listen(8080, () => console.log("Example app listening on port 8080!"));
 function createCards(suit) {
   return [
     {
@@ -82,26 +84,25 @@ function createCards(suit) {
       cardName: `${suit}q`,
       value: 10,
       isAce: false
-    }, {
+    },
+    {
       cardName: `${suit}k`,
       value: 10,
       isAce: false
     }
-
-  ]
+  ];
 }
 function createDeck() {
   return new Deck([
     ...createCards("h"),
     ...createCards("d"),
     ...createCards("s"),
-    ...createCards("c"),
-  ]
-  );
+    ...createCards("c")
+  ]);
 }
 function createGame() {
-  const deck = createDeck()
-  deck.shuffle()
+  const deck = createDeck();
+  deck.shuffle();
   return {
     Deck: deck,
     Dealer: {
@@ -114,16 +115,15 @@ function createGame() {
       points: 0,
       numAces: 0
     }
-  }
+  };
 }
 
 function addCard(hand, card) {
-  hand.cards.push(card)
-  hand.points += card.value
-  if (card.isAce)
-    hand.numAces++
+  hand.cards.push(card);
+  hand.points += card.value;
+  if (card.isAce) hand.numAces++;
   if (hand.points > 21 && hand.numAces > 0) {
-    hand.points = hand.points - 10
-    hand.numAces--
+    hand.points = hand.points - 10;
+    hand.numAces--;
   }
 }

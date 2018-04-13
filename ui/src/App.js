@@ -45,6 +45,8 @@ class App extends Component {
           <div>Player</div>
           <div>{this.renderHand(this.state.hands.player)}</div>
         </div>
+
+
       </div>
     )
   }
